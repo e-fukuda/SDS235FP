@@ -1,254 +1,160 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+		<title>Smoothed D3.js Radar Chart</title>
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+		<!-- Google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
-  <title>WordCloud Test</title>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+		<!-- D3.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+		
+		<style>
+			body {
+				font-family: 'Open Sans', sans-serif;
+				font-size: 11px;
+				font-weight: 300;
+				fill: #242424;
+				text-align: center;
+				text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+				cursor: default;
+			}
+			
+			.legend {
+				font-family: 'Raleway', sans-serif;
+				fill: #333333;
+			}
+			
+			.tooltip {
+				fill: #333333;
+			}
+		</style>
+        
+        
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Slider - Range slider</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	</head>
+	<body>
 
-    
-</head>
+		<div class="radarChart"></div>
 
-<body>
-    
-   <script>
-       //var fill = d3.scale.category20();
-       
-  var data = [
-  {
-    "index": 1,
-    "word": "trump",
-    "weight": 21836
-  },
-  {
-    "index": 2,
-    "word": "clinton",
-    "weight": 20093
-  },
-  {
-    "index": 3,
-    "word": "people",
-    "weight": 19693
-  },
-  {
-    "index": 4,
-    "word": "hillary",
-    "weight": 14310
-  },
-  {
-    "index": 5,
-    "word": "time",
-    "weight": 11426
-  },
-  {
-    "index": 6,
-    "word": "election",
-    "weight": 10573
-  },
-  {
-    "index": 7,
-    "word": "world",
-    "weight": 10542
-  },
-  {
-    "index": 8,
-    "word": "president",
-    "weight": 10368
-  },
-  {
-    "index": 9,
-    "word": 2016,
-    "weight": 10246
-  },
-  {
-    "index": 10,
-    "word": "government",
-    "weight": 9705
-  },
-  {
-    "index": 11,
-    "word": "war",
-    "weight": 9351
-  },
-  {
-    "index": 12,
-    "word": "american",
-    "weight": 8799
-  },
-  {
-    "index": 13,
-    "word": "it’s",
-    "weight": 8667
-  },
-  {
-    "index": 14,
-    "word": "obama",
-    "weight": 8194
-  },
-  {
-    "index": 15,
-    "word": "u.s",
-    "weight": 8050
-  },
-  {
-    "index": 16,
-    "word": "media",
-    "weight": 7962
-  },
-  {
-    "index": 17,
-    "word": "campaign",
-    "weight": 7196
-  },
-  {
-    "index": 18,
-    "word": "russia",
-    "weight": 7185
-  },
-  {
-    "index": 19,
-    "word": "news",
-    "weight": 6990
-  },
-  {
-    "index": 20,
-    "word": "donald",
-    "weight": 6602
-  },
-  {
-    "index": 21,
-    "word": "political",
-    "weight": 6515
-  },
-  {
-    "index": 22,
-    "word": "united",
-    "weight": 6145
-  },
-  {
-    "index": 23,
-    "word": "country",
-    "weight": 6136
-  },
-  {
-    "index": 24,
-    "word": "day",
-    "weight": 5942
-  },
-  {
-    "index": 25,
-    "word": "white",
-    "weight": 5913
-  },
-  {
-    "index": 26,
-    "word": "fbi",
-    "weight": 5850
-  },
-  {
-    "index": 27,
-    "word": "don’t",
-    "weight": 5630
-  },
-  {
-    "index": 28,
-    "word": "america",
-    "weight": 5476
-  },
-  {
-    "index": 29,
-    "word": "power",
-    "weight": 5349
-  },
-  {
-    "index": 30,
-    "word": "public",
-    "weight": 5347
-  }
-];
+		<script src="radarChart.js"></script>	
+		<script>
+            
+            
+            
+            
+            
+            
+            /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+      
+			////////////////////////////////////////////////////////////// 
+			//////////////////////// Set-Up ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
 
-d3.layout.cloud().size([300, 300])
-  .words(data)
-  .padding(1)
-  .rotate(function(d) { return 0; })
-//    .font("Impact")
-  .text(function(d) { return d.word; }) // THE SOLUTION
-  .fontSize(function(d) { return d.size; })
-  .on("end", draw)
-  .start();
+			var margin = {top: 100, right: 100, bottom: 100, left: 100},
+                legendPosition = {x: 25, y: 25},
+				width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+				height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+            
+            
+					
+			////////////////////////////////////////////////////////////// 
+			////////////////////////// Data ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
 
-  function draw(words) {
-      d3.select("body").append("svg")
-        .attr("width", 300)
-        .attr("height", 300)
-      .append("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        //.style("fill", function(d, i) { return fill(i); })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
+			var data = [
+					  [//Group A
+						{axis:"pct_anger",value:0.0733},
+						{axis:"pct_anticipation",value:0.0333},
+						{axis:"pct_disgust",value:0.0222},
+						{axis:"pct_fear",value:0.0111},
+						{axis:"pct_joy",value:0.0222},
+						{axis:"pct_negative",value:0.0556},
+					  ],[//Group B
+						{axis:"pct_anger",value:0.0333},
+						{axis:"pct_anticipation",value:0.0333},
+						{axis:"pct_disgust",value:0.0222},
+						{axis:"pct_fear",value:0.0111},
+						{axis:"pct_joy",value:0.0222},
+						{axis:"pct_negative",value:0.0556},
+					  ],[//Group C
+						{axis:"pct_anger",value:0.0378},
+						{axis:"pct_anticipation",value:0.0241},
+						{axis:"pct_disgust",value:0.0120},
+						{axis:"pct_fear",value:0.0464},
+						{axis:"pct_joy",value:0.0103},
+						{axis:"pct_negative",value:0.0739},
+					  ]
+					];
+			////////////////////////////////////////////////////////////// 
+			//////////////////// Draw the Chart ////////////////////////// 
+			////////////////////////////////////////////////////////////// 
 
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
-  function drawUpdate(words){
-   d3.layout.cloud().size([500, 500])
-      .words(words)
-      .padding(5)
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .font("Impact")
-      .fontSize(function(d) { return d.size; })
-      .start();
-
-
-      d3.select("svg")
-      .selectAll("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words).enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        //S.style("fill", function(d, i) { return fill(i); })
-
-        .attr("transform", function(d) {
-
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-
-
-
-  }
-
-  setInterval(function () { 
-        var d_new = data;
-        d_new.push({word:randomWord(),weight:randomWeight()});
-
-         drawUpdate(d_new.map(function(d) {
-        return {text: d.word, size: d.weight};
-      }));
-      }, 1500);
-
-  function randomWord() {
-          var text = "";
-          var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-          for( var i=0; i < 5; i++ )
-              text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-          return text;
-      }
-      function randomWeight(){
-        var r = Math.round(Math.random() * 100);
-        return r;
-      }
-    </script>
-</body>
+			var color = d3.scale.ordinal()
+				.range(["#EDC951","#CC333F","#00A0B0"]);
+				
+			var radarChartOptions = {
+			  w: width,
+			  h: height,
+			  margin: margin,
+			  maxValue: 0.08,
+			  levels: 5,
+			  roundStrokes: true,
+			  color: color
+			};
+            
+            
+           
+			//Call function to draw the Radar chart
+			RadarChart(".radarChart", data, radarChartOptions);
+            
+            
+            
+            /*d3.json("pasted.json", function(error, d){
+                var radarChartOptions = {
+                  w: width,
+                  h: height,
+                  margin: margin,
+                  legendPosition: legendPosition,
+                  maxValue: 0.5,
+                  wrapWidth: 60,
+                  levels: 5,
+                  roundStrokes: true,
+                  color: color,
+                  axisName: "title",
+                  areaName: "sentiment",
+                  value: "pc"
+                };
+                
+                console.log(data);
+				RadarChart(".radarChart", d, radarChartOptions);
+			});
+            */
+		</script>
+        
+        
+        
+<p>
+  <label for="amount">Sentiment range:</label>
+  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</p>
+ 
+<div id="slider-range"></div>        
+        
+        
+        
+        
+        
+        
+        
+        
+	</body>
 </html>
